@@ -1,10 +1,12 @@
-const produtoModel = require('./produto-model');
+const { sequelize } = require('../../../models');
+const produtoModel = require('./produto-model')(sequelize);
+const produtoSchema = require('./produto-schema');  
 
 const save = async (produto) => {
     try {
         console.log("Produto recebido para salvar:", produto);
 
-        const saved = await produtoModel.Produto.create(produto);
+        const saved = await produtoModel.create(produto);
 
         console.log("Produto salvo:", saved);
 
@@ -19,7 +21,7 @@ const converterChaves = (produto) => {
     return {
         nome: produto.nome,
         descricao: produto.descricao,
-        categoria: produto.categoria,
+        categoria: Object.keys(produtoSchema.categoriasValidas).find(key => produtoSchema.categoriasValidas[key] === produto.categoria),
         marca: produto.marca,
         preco: produto.preco,
         quantidadeEstoque: produto.quantidadeEstoque,

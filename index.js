@@ -1,6 +1,7 @@
-const server = require("./server");
+const startServer = require("./server");
 
-(async () => {
-    await server.start();
-    console.log("Server listening " + server.info.uri);
-})();
+startServer()
+    .then(() => console.log("Server listening..."))
+    .catch((error) => {
+        console.error("Erro ao iniciar o servidor:", error);
+    });
