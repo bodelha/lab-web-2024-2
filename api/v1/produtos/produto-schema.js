@@ -157,8 +157,16 @@ const getProduto = {
     })
 };
 
+const getProdutos = {
+    query: Joi.object({
+        categoria: Joi.string().valid(...Object.keys(categoriasValidas)),
+        nome: Joi.string().min(2),
+    })
+};
+
 module.exports = {
     categoriasValidas,
     criarProduto,
-    getProduto
+    getProduto,
+    getProdutos
 };

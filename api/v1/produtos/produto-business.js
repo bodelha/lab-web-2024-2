@@ -1,4 +1,5 @@
 const { sequelize } = require('../../../models');
+const { Op } = require('sequelize');
 const produtoModel = require('./produto-model')(sequelize);
 const produtoSchema = require('./produto-schema');
 
@@ -25,6 +26,33 @@ const find = async (id) => {
         throw error;
     }
 };
+
+const findMany = async (filtros = {}) => {
+    try {
+        const whereClause = {
+            status: { [Op.ne]: "removido" }
+        };
+        if (filtros.categoria) {
+            whereClause.categoria = filtros.categoria;
+        }
+        if (filtros.nome) {
+            whereClause.nome = {
+                [Op.iLike]: `%${filtros.nome}%`
+            };
+        }
+        if (filtros.status) {
+            whereClause.status = filtros.status;
+        }
+        const produtos = await produtoModel.findAll({
+            where: whereClause
+        });
+        return produtos.map(mapearParaResposta);
+    } catch (error) {
+        console.error("[Business] Erro ao buscar produtos:", error);
+        throw error;
+    }
+};
+
 
 const mapearParaBanco = (produto) => {
     return {
@@ -72,4 +100,4 @@ const mapearParaResposta = (produto) => {
     };
 };
 
-module.exports = { save, find };
+module.exports = { save, find, findMany };

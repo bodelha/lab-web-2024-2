@@ -27,6 +27,29 @@ const obterProdutoPorId = async (request, h) => {
     }
 };
 
+const obterProdutos = async (request, h) => {
+    try {
+        // const { categoria, nome } = request.query;
+
+        // const filtros = {};
+        // if (categoria) filtros.categoria = categoria;
+        // if (nome) filtros.nome = nome;
+
+        const filtros = {
+            nome: request.query.nome,
+            categoria: request.query.categoria,
+            status: request.query.status,
+        };
+
+        const produtos = await produtoBusiness.findMany(filtros);
+
+        return h.response(produtos).code(200);
+    } catch (error) {
+        console.error("[Controller] Erro ao buscar produtos:", error);
+        return h.response({ erro: error.message }).code(500);
+    }
+};
+
 const atualizarProduto = async (request, h) => {
     try {
         const { id } = request.params;
@@ -69,4 +92,4 @@ const removerProduto = async (request, h) => {
     }
 };
 
-module.exports = { criarProduto, obterProdutoPorId, atualizarProduto, removerProduto };
+module.exports = { criarProduto, obterProdutoPorId, obterProdutos, atualizarProduto, removerProduto };
