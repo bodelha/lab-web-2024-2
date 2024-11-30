@@ -2,6 +2,22 @@ const { sequelize } = require('../../../models');
 const produtoModel = require('./produto-model')(sequelize);
 const produtoSchema = require('./produto-schema');
 
+const save = async (produto) => {
+    const produtoNormalizado = mapearParaBanco(produto);
+    const produtoSalvo = await produtoModel.create(produtoNormalizado);
+    return mapearParaResposta(produtoSalvo);
+};
+
+const find = async (id) => {
+    try {
+        const produto = await produtoModel.findByPk(id);
+        return produto ? mapearParaResposta(produto) : null;
+    } catch (error) {
+        console.error("[Business] Erro ao buscar produto por ID:", error);
+        throw error;
+    }
+};
+
 const mapearParaBanco = (produto) => {
     return {
         nome: produto.nome,
@@ -48,11 +64,7 @@ const mapearParaResposta = (produto) => {
     };
 };
 
-const save = async (produto) => {
-    const produtoNormalizado = mapearParaBanco(produto);
-    const produtoSalvo = await produtoModel.create(produtoNormalizado);
-    return mapearParaResposta(produtoSalvo);
-};
 
 
-module.exports = { save };
+
+module.exports = { save, find };

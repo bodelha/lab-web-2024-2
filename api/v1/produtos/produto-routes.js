@@ -27,6 +27,30 @@ const routes = [
                 }
             }
         }
+    },
+    {
+        method: "GET",
+        path: `${baseVersion}/produtos/{id}`,
+        options: {
+            handler: async (request, h) => {
+                console.log(`[Route] Rota GET ${baseVersion}/produtos/{id} chamada`);
+                return produtoController.obterProdutoPorId(request, h);
+            },
+            validate: {
+                params: produtoSchema.getProduto.params,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro de validação nos parâmetros:", error.details);
+                    throw error;
+                }
+            },
+            response: {
+                schema: produtoSchema.getProduto.response,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro na validação da resposta:", error.details);
+                    throw error;
+                }
+            }
+        }
     }
 ];
 
