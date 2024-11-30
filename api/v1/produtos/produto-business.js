@@ -4,6 +4,14 @@ const produtoSchema = require('./produto-schema');
 
 const save = async (produto) => {
     const produtoNormalizado = mapearParaBanco(produto);
+    if (produto.id) {
+        await produtoModel.update(produtoNormalizado, {
+            where: { id: produto.id }
+        });
+        produtoNormalizado.id = produto.id;
+        return mapearParaResposta(produtoNormalizado);
+    }
+
     const produtoSalvo = await produtoModel.create(produtoNormalizado);
     return mapearParaResposta(produtoSalvo);
 };

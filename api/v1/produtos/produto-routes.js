@@ -51,6 +51,31 @@ const routes = [
                 }
             }
         }
+    },
+    {
+        method: "PUT",
+        path: `${baseVersion}/produtos/{id}`,
+        options: {
+            handler: async (request, h) => {
+                console.log(`[Route] Rota PUT ${baseVersion}/produtos/{id} chamada`);
+                return produtoController.atualizarProduto(request, h);
+            },
+            validate: {
+                params: produtoSchema.getProduto.params,
+                payload: produtoSchema.criarProduto.payload,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro de validação:", error.details);
+                    throw error;
+                }
+            },
+            response: {
+                schema: produtoSchema.getProduto.payload,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro na validação da resposta:", error.details);
+                    throw error;
+                }
+            }
+        }
     }
 ];
 
