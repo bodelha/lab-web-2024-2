@@ -76,6 +76,30 @@ const routes = [
                 }
             }
         }
+    },
+    {
+        method: "DELETE",
+        path: `${baseVersion}/produtos/{id}`,
+        options: {
+            handler: async (request, h) => {
+                console.log(`[Route] Rota DELETE ${baseVersion}/produtos/{id} chamada`);
+                return produtoController.removerProduto(request, h);
+            },
+            validate: {
+                params: produtoSchema.getProduto.params,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro de validação nos parâmetros:", error.details);
+                    throw error;
+                }
+            },
+            response: {
+                schema: produtoSchema.getProduto.response,
+                failAction: (request, h, error) => {
+                    console.log("[Route] Erro na validação da resposta:", error.details);
+                    throw error;
+                }
+            }
+        }
     }
 ];
 

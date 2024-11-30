@@ -63,9 +63,13 @@ module.exports = (sequelize) => {
             allowNull: false,
         },
         status: {
-            type: DataTypes.ENUM('ativo', 'inativo', 'sem estoque'),
+            type: DataTypes.ENUM('ativo', 'inativo', 'sem estoque', 'removido'),
             allowNull: false,
             defaultValue: 'ativo',
+        },
+        dataRemocao: {
+            type: DataTypes.DATE,
+            allowNull: true,
         }
     }, {
         tableName: 'produto',

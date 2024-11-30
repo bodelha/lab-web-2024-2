@@ -72,7 +72,4 @@ const mapearParaResposta = (produto) => {
     };
 };
 
-
-
-
 module.exports = { save, find };
