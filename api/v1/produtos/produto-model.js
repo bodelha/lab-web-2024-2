@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
             type: DataTypes.ENUM(...Object.keys(produtoSchema.categoriasValidas)),
             allowNull: false,
         },
+        marca: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         preco: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,

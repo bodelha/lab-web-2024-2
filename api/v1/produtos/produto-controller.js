@@ -2,17 +2,12 @@ const produtoBusiness = require("./produto-business");
 
 const criarProduto = async (request, h) => {
     try {
-        const produto = request.payload;
+        const produto = await produtoBusiness.save(request.payload);
 
-        const produtoConvertido = produtoBusiness.converterChaves(produto);
-
-        const result = await produtoBusiness.save(produtoConvertido);
-        console.log("Produto salvo:", result);
-
-        return h.response(result).code(201);
+        return h.response(produto).code(201);
     } catch (error) {
-        console.error("Erro ao criar produto:", error);
-        return h.response({ error: error.message }).code(400);
+        console.error("[Controller] Erro ao criar produto:", error);
+        return h.response({ erro: error.message }).code(500);
     }
 };
 
